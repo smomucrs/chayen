@@ -70,27 +70,46 @@
             transform: translateX(0);
         }
 
+        #game-screen {
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 30px;
+        }
+
         .score-display, .timer-display {
             font-size: 1.2em;
             margin-bottom: 15px;
             color: #555;
             font-weight: bold;
+            width: 100%;
+            text-align: center;
+        }
+
+        .word-controls-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            flex-grow: 1;
+            width: 100%;
+            align-items: stretch;
+            margin-top: auto;
+            margin-bottom: auto;
         }
 
         .word-display {
             background-color: #ecf0f1;
             border-radius: 8px;
             padding: 20px;
-            margin: 20px 0;
-            min-height: 200px;
+            min-height: unset;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-grow: 1;
+            flex: 3;
+            word-break: break-word;
+            text-align: center;
+            margin: 0;
         }
-
-        /* #word-image is removed as per request */
 
         #current-word {
             font-size: 2.5em;
@@ -103,9 +122,11 @@
 
         .controls {
             display: flex;
-            justify-content: space-between;
-            width: 100%;
-            margin-top: 20px;
+            flex-direction: column;
+            flex: 1;
+            gap: 15px;
+            margin-top: 0;
+            justify-content: space-around;
         }
 
         button {
@@ -115,8 +136,8 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            flex: 0 1 auto; 
-            margin: 0; 
+            flex: 0 1 auto;
+            margin: 0;
         }
 
         #start-game-btn {
@@ -128,6 +149,14 @@
 
         #start-game-btn:hover {
             background-color: #27ae60;
+        }
+
+        .left-btn, .right-btn {
+            padding: 30px 20px;
+            font-size: 2em;
+            flex-grow: 1;
+            width: 100%;
+            margin: 0;
         }
 
         .left-btn {
@@ -158,7 +187,7 @@
         #end-screen h2 {
             font-size: 2.5em;
             color: #2c3e50;
-            margin-bottom: 10px; 
+            margin-bottom: 10px;
         }
 
         #end-screen p {
@@ -172,7 +201,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: auto; /* Push buttons to the bottom */
+            margin-top: auto;
             width: 100%;
             align-items: center;
         }
@@ -183,8 +212,8 @@
             padding: 20px 40px;
             font-size: 1.5em;
             align-self: center;
-            width: 80%; /* Make buttons wider */
-            max-width: 350px; /* Limit max width */
+            width: 80%;
+            max-width: 350px;
         }
 
         #restart-game-btn:hover, #reset-all-btn:hover {
@@ -192,7 +221,7 @@
         }
 
         #reset-all-btn {
-            background-color: #f39c12; /* Different color for reset all */
+            background-color: #f39c12;
         }
         #reset-all-btn:hover {
             background-color: #e67e22;
@@ -209,13 +238,41 @@
                 font-size: 1.8em;
             }
 
+            #game-screen {
+                padding: 20px;
+            }
+
             #current-word {
-                font-size: 2em;
+                font-size: 3.5em;
+            }
+
+            .word-controls-wrapper {
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+            .word-display {
+                min-height: 150px;
+                flex: none;
+            }
+            .controls {
+                flex-direction: row;
+                flex: none;
+                gap: 10px;
+                width: 100%;
             }
 
             button {
                 padding: 12px 20px;
                 font-size: 1em;
+            }
+
+            .left-btn, .right-btn {
+                padding: 20px 30px;
+                font-size: 1.5em;
+                flex-grow: 1;
+                width: auto;
             }
 
             #start-game-btn, #restart-game-btn, #reset-all-btn {
@@ -244,12 +301,14 @@
         <div id="game-screen" class="screen">
             <div class="score-display">คะแนน: <span id="score">0</span></div>
             <div class="timer-display">เวลา: <span id="timer">30</span>s</div>
-            <div class="word-display">
-                <p id="current-word"></p>
-            </div>
-            <div class="controls">
-                <button id="skip-btn" class="left-btn">ข้าม</button>
-                <button id="correct-btn" class="right-btn">ถูก!</button>
+            <div class="word-controls-wrapper">
+                <div class="word-display">
+                    <p id="current-word"></p>
+                </div>
+                <div class="controls">
+                    <button id="skip-btn" class="left-btn">ข้าม</button>
+                    <button id="correct-btn" class="right-btn">ถูก!</button>
+                </div>
             </div>
         </div>
 
@@ -271,9 +330,8 @@
 
             const startGameBtn = document.getElementById('start-game-btn');
             const restartGameBtn = document.getElementById('restart-game-btn');
-            const resetAllBtn = document.getElementById('reset-all-btn'); 
+            const resetAllBtn = document.getElementById('reset-all-btn');
             const currentWordDisplay = document.getElementById('current-word');
-            // const wordImageDisplay = document.getElementById('word-image'); // Removed
             const scoreDisplay = document.getElementById('score');
             const timerDisplay = document.getElementById('timer');
             const skipBtn = document.getElementById('skip-btn');
@@ -314,7 +372,7 @@
                 { id: "orange_cat", word: "แมวส้ม", difficulty: "normal" },
                 { id: "namthong_sikkhalai", word: "น้ำทองสิกขาลัย", difficulty: "normal" },
                 { id: "lotus", word: "โลตัส", difficulty: "normal" },
-                { id: "canteen_again", word: "โรงอาหาร", difficulty: "normal" }, 
+                { id: "canteen_again", word: "โรงอาหาร", difficulty: "normal" },
                 { id: "goldfish", word: "ปลาทอง", difficulty: "normal" },
                 { id: "mu_dee", word: "MUดี", difficulty: "normal" },
                 { id: "pineapple", word: "สับปะรด", difficulty: "normal" },
@@ -390,7 +448,7 @@
                 { id: "great_wall", word: "กำแพงเมืองจีน", difficulty: "hard" },
                 { id: "communism", word: "ลัทธิคอมมิวนิสต์", difficulty: "hard" },
                 { id: "three_kingdoms", word: "สามก๊ก", difficulty: "hard" },
-                { id: "samurai_hard", word: "ซามุไร", difficulty: "hard" }, 
+                { id: "samurai_hard", word: "ซามุไร", difficulty: "hard" },
                 { id: "joseon_dynasty", word: "อาณาจักรโชซ็อน", difficulty: "hard" },
                 { id: "tsunami", word: "สึนามิ", difficulty: "hard" },
 
@@ -461,7 +519,7 @@
                     score = 0;
                     playedWordIds = new Set();
                     scoreDisplay.textContent = score;
-                    showScreen(startScreen); 
+                    showScreen(startScreen);
                     alert("เกมถูกรีเซ็ตเรียบร้อยแล้ว!");
                 }
             }
@@ -487,9 +545,8 @@
 
                 if (availableWords.length === 0) {
                     currentWordDisplay.textContent = "ไม่มีคำศัพท์เหลือแล้ว!";
-                    // wordImageDisplay.src = ""; // Removed
                     clearInterval(countdown);
-                    endGame(); 
+                    endGame();
                     return;
                 }
 
@@ -506,7 +563,7 @@
                             currentWordsInRound.push(normalWordsToPick[normalIdx]);
                             normalIdx++;
                         } else {
-                            break; 
+                            break;
                         }
                     }
 
@@ -521,16 +578,15 @@
             }
 
             function startGame() {
-                timer = 30; 
+                timer = 30;
                 timerDisplay.textContent = timer;
                 currentWordIndex = 0;
                 
-                loadGameState(); 
+                loadGameState();
                 generateRoundWords();
 
                 if (availableWords.length === 0) {
                     currentWordDisplay.textContent = "ไม่มีคำศัพท์เหลือแล้ว!";
-                    // wordImageDisplay.src = ""; // Removed
                     finalScoreDisplay.textContent = score;
                     showScreen(endScreen);
                     return;
@@ -545,16 +601,13 @@
                 if (currentWordIndex < currentWordsInRound.length) {
                     const selectedWord = currentWordsInRound[currentWordIndex];
                     currentWordDisplay.textContent = selectedWord.word;
-                    // wordImageDisplay.src = selectedWord.image ? `images/${selectedWord.image}` : ''; // Removed
-                    // wordImageDisplay.alt = `รูปภาพของ ${selectedWord.word}`; // Removed
                     currentWordDisplay.dataset.difficulty = selectedWord.difficulty;
-                    currentWordDisplay.dataset.id = selectedWord.id; 
+                    currentWordDisplay.dataset.id = selectedWord.id;
                     currentWordIndex++;
                 } else {
                     currentWordDisplay.textContent = "หมดคำศัพท์ในรอบนี้!";
-                    // wordImageDisplay.src = ""; // Removed
-                    clearInterval(countdown); 
-                    endGame(); 
+                    clearInterval(countdown);
+                    endGame();
                 }
             }
 
@@ -585,26 +638,23 @@
                     score += 10;
                 }
                 scoreDisplay.textContent = score;
-                playedWordIds.add(wordId); 
-                saveGameState(); 
+                playedWordIds.add(wordId);
+                saveGameState();
                 nextWord();
             }
 
             function handleSkip() {
                 const wordId = currentWordDisplay.dataset.id;
-                // ถ้าต้องการนับคำที่ข้ามเป็นเล่นแล้วด้วย ให้เปิดคอมเมนต์บรรทัดด้านล่าง
-                // playedWordIds.add(wordId); 
-                // saveGameState();
                 nextWord();
             }
 
             startGameBtn.addEventListener('click', startGame);
             restartGameBtn.addEventListener('click', startGame);
-            resetAllBtn.addEventListener('click', resetAllGameData); 
+            resetAllBtn.addEventListener('click', resetAllGameData);
             correctBtn.addEventListener('click', handleCorrectGuess);
             skipBtn.addEventListener('click', handleSkip);
 
-            loadGameState(); 
+            loadGameState();
             showScreen(startScreen);
         });
     </script>
